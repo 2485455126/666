@@ -14,9 +14,10 @@ jobs:
     
     - name: Build with DDK Docker
       run: |
+        docker logout ghcr.io
         docker run --rm -v ${{ github.workspace }}:/module -w /module \
           -e KMI=android15-6.6 \
-          ghcr.io/5ec1cff/ddk bash -c "make"
+          ghcr.io/5ec1cff/ddk:latest bash -c "make"
           
     - name: Upload Module
       uses: actions/upload-artifact@v4
