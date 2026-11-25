@@ -1,0 +1,25 @@
+name: Build KSU Module
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: Build with DDK Docker
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/module -w /module \
+          -e KMI=android15-6.6 \
+          ghcr.io/5ec1cff/ddk bash -c "make"
+          
+    - name: Upload Module
+      uses: actions/upload-artifact@v4
+      with:
+        name: anti_danger_ko
+        path: "*.ko"
